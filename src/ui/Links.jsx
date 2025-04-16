@@ -14,7 +14,7 @@ const Links = ({dj = "smith"}) => {
       };
     
       const activeLinkStyle = {
-        backgroundColor: 'orange',
+        backgroundColor: 'rgb(45, 106, 177)',
         color: 'white',
       };
       if(linkRef.current) {

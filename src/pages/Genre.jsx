@@ -78,10 +78,10 @@ const Genre = () => {
         }}>
           <div className="p-3 pb-0  neutral lg:w-5/6 lg:mx-auto " >
         {genres.map((item) => (
-          <div key={item} style={item.toLowerCase() === genre.toLowerCase() ? {...linkStyle, ...activeLinkStyle} : linkStyle} className="inline-block rounded-sm overflow-hidden hover:">
+          <div key={item} style={item.toLowerCase() === genre.toLowerCase() ? {...linkStyle, ...activeLinkStyle} : linkStyle} className="inline-block rounded-sm overflow-hidden hover:cursor-pointer">
             <p className='capitalize' onClick={() => {
               setGenre(item)
-            }}>{item}</p>
+            }} >{item}</p>
           </div>
         ))}
       </div>
