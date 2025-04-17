@@ -99,7 +99,7 @@ const Neutral = () => {
           <figure >
             <img ref={(el) => (imageRefs.current[index] = el)} className='h-full w-full block object-cover' src={require(item.image)} alt="" />
           </figure>
-          <p className={`title ${hidden ? "hidden" : null}`} >{item.title}</p>
+          <p className={`title`} >{item.title}</p>
         </div>
       ))}
     </div>}
