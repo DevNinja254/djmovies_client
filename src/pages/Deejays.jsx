@@ -17,6 +17,7 @@ const Dj_Afro = () => {
   const navigate = useNavigate()
   // window.scrollTo(0, 0)
   const fetchMovies = async (dj) => {
+    setLoading(false)
     const response = await api.get(`/videoDetails/?page_size=1000&type=dj_${dj}&ordering=-date_uploaded`, config)
      const data = await response.data.results
     //  sessionStorage.setItem(`recent_${dj}`, JSON.stringify(data))
