@@ -92,6 +92,43 @@ height: 40vh;
  .container {
     min-height: 50vh;
  }
+ .hyphen-separator {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the text */
+  }
+  
+  .hyphen-separator::before,
+  .hyphen-separator::after {
+    content: '--------------------------------------------------------------------------------------------------------------------------------'; /* Initial set of hyphens */
+    position: absolute;
+    top: 50%;
+    width: 100vw; /* Take the full viewport width */
+    overflow: hidden; /* Hide overflowing hyphens */
+    color: inherit; /* Inherit text color */
+    font-size: inherit; /* Inherit text size */
+    white-space: nowrap; /* Prevent line breaks */
+    transform: translateY(-50%); /* Vertically center */
+  }
+  
+  .hyphen-separator::before {
+    justify-content: flex-end; /* Align hyphens to the right */
+    text-align: right;
+    left: 0;
+  }
+  
+  .hyphen-separator::after {
+    justify-content: flex-start; /* Align hyphens to the left */
+    text-align: left;
+    right: 0;
+  }
+  
+  .hyphen-separator > span {
+    padding: 0 1em; /* Add some spacing around the text */
+    background-color: white; /* To visually separate the hyphens */
+    z-index: 1; /* Ensure the text is above the pseudo-elements */
+  }
 @media screen and  (min-width: 600px) {
     .neutral figure {
         height:50vh;

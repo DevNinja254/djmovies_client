@@ -8,7 +8,7 @@ import { BounceLoader } from 'react-spinners';
 const Genre = () => {
     const {dj} = useParams()
     const [genre, setGenre] = useState('Action')
-    const genres = ["Action", "Horror", "Adventure", "comedy", "sci fi", "romance"]
+    const genres = ["Action", "horror", "Adventure", "comedy", "sci fi", "romance"]
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [redirecting, setRedirecting] = useState(false)

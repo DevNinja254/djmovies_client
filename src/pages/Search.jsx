@@ -1,144 +1,101 @@
 import React, { useEffect, useState } from 'react'
-import Layout from "../layout/Layout"
-import { NavLink, useNavigate } from 'react-router-dom';
-import api, { config } from '../js/api';
-import Loader from '../boilerplates/Loader';
+import { useParams, useNavigate } from 'react-router-dom'
+import Header from '../ui/Header'
+import Neutral from '../ui/Neutral'
+import Footer from '../ui/Footer'
+import { BounceLoader } from 'react-spinners';
+import ClipLoader from "react-spinners/ClipLoader";
+import api, { config } from '../assets/js/api'
+
 const Search = () => {
-    const [datas, setData] = useState([])
+  const [datas, setDatas] = useState([])
+  const {searchTerm} = useParams()
+  const [loading, setLoading] = useState(true)
+  const [redirecting, setRedirecting] = useState(false)
+    const [paidTitles, setPaidTitles] = useState([])
     const navigate = useNavigate()
-    const [isLoading, setIsLoading] = useState(true)
-    const[count, setCount] = useState(0)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [error, setError] = useState(null);
-    const pageSize = 20
-    const maxVisiblePages = 100
-    const path = window.location.search.split("=")[1]
-    const fetchItems = async (page) => {
-      window.scrollTo(0,0)
-      setIsLoading(true);
-      setError(null);
-      console.log(path)
-      try {
-        let url = `/videoDetails/?title=${String(path).toLowerCase()}&page_size=20&ordering=-date_uploaded`
-        const response = await api.get(url, config);
-        const data = await response.data;
-        // console.log(data)
-        setData(data.results)
-        setCount(data.count);
-        setCurrentPage(page);
-        
-      } catch (e) {
-        console.log(e.message);
-        setError(e.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-   useEffect(() => {
-    
-    window.scrollTo(0,0)
-    document.title = `Search | ${path}`
-    fetchItems(currentPage)      
-   }, [path])
-   // console.log(datas)
-   const redirect = (title, id) => {
-    // console.log(paidTitles)
-    const paidTitles = JSON.stringify(localStorage.getItem("paid"))
-    if(paidTitles.includes(title.toLowerCase())) {
-      navigate(`/store/play/${title}?q=${id}`)
-    } else {
-      navigate(`/store/${title}?q=${id}`)
-    }
+  const fetchResult =async(search) => {
+    setLoading(true)
+    const response = await api.get(`/videoDetails/?type=&title=${search}&ordering=-date_uploaded&page_size=100`, config)
+    const data = await response.data.results
+    setDatas(data)
+    setLoading(false)
   }
-  ///////////////////////////////////
-  const goToPage = (pageNumber) => {
-    if (pageNumber >= 1 && pageNumber <= Math.ceil(count / pageSize)) {
-      fetchItems(pageNumber);
-    }
-  };
-  const totalPages = Math.ceil(count / pageSize);
-  const getPaginationButtons = () => {
-    const buttons = [];
-
-    // Determine the range of pages to display directly
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, currentPage + Math.floor(maxVisiblePages / 2));
-
-    // Adjust start and end if near the edges to show a fixed number of pages
-    if (totalPages <= maxVisiblePages) {
-      startPage = 1;
-      endPage = totalPages;
-    } else {
-      if (endPage - startPage < maxVisiblePages - 1) {
-        if (startPage === 1) {
-          endPage = Math.min(totalPages, maxVisiblePages);
-        } else if (endPage === totalPages) {
-          startPage = Math.max(1, totalPages - maxVisiblePages + 1);
-        }
+  useEffect(() => {
+    fetchResult(searchTerm)
+    const paid = localStorage.getItem("own")
+      if (paid) {
+        setPaidTitles(JSON.parse(paid))
       }
-    }
+  }, [searchTerm])
+  const handleRedirect = async (vida) => {
+    setRedirecting(true)
+    // console.log(vida)
+    api.get(`/videoDetails/?genre=${vida.genre}&page_size=6&ordering=-date_uploaded`, config)
+    .then(res1 => {
+      const data1 = res1.data.results
+      sessionStorage.setItem("similar", JSON.stringify(data1))
+      sessionStorage.setItem("toPlay", JSON.stringify(vida))
+      if (paidTitles) {
+        if(paidTitles.includes(vida.title)){
+          navigate(`/play/${vida.vidId}/`)
+        } else {
+          navigate(`/store/${vida.vidId}/`)
+        }
+      }else {
+        navigate(`/store/${vida.vidId}/`)
+      }
 
-    for (let i = startPage; i <= endPage; i++) {
-      buttons.push(
-        <button
-          key={i}
-          onClick={() => goToPage(i)}
-          className={i === currentPage ? 'active px-2 py-1 bg-gray-500 text-red-600 font-bold bg-opacity-15' : 'px-2 py-1 bg-gray-500 text-white font-bold bg-opacity-15'}
-          disabled={i === currentPage}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    return buttons;
-  };
-  ////////////////////////////
+    })
+  }
   return (
-    <Layout>
-      <main className=' bg-black search'>
-            <div className="mx-3 py-2 md:w-11/12 md:mx-auto lg:w-10/12 xl:w-4/5">
-          {isLoading ? <div>
-            <div className=' mb-3'>
-            <Loader h1='' h2='h-4'/>
+    <div>
+      <Header/>
+      <main className='min-h-96'>
+     
+
+
+      {/* =========================== */}
+      <div className={`fixed top-0 left-0 w-full h-full bg-opacity-50 z-10   items-center justify-center gap-1 bg-slate-900 ${redirecting ? 'flex' : 'hidden'}`}>
+              <BounceLoader color="#36D7B7" loading={redirecting} size={20} />
+              <BounceLoader color="#36D7B7" loading={redirecting} size={20} />
+              <BounceLoader color="#36D7B7" loading={redirecting} size={20} />
+              <BounceLoader color="#36D7B7" loading={redirecting} size={20} />
+              </div>
+      <section className='min-h-60'>
+         
+      {loading ? <div className='h-40 grid place-content-center'>
+      <ClipLoader
+        color={"gray"}
+        loading={loading}
+        // cssOverride={override}
+        size={50}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+      </div>
+    : 
+    <>
+    <p className='textMidSm text-gray-500 text-center whitespace-nowrap overflow-hidden py-2 hyphen-separator'>
+    <span>{datas.length} results found from your search <q className='px-2 '>{searchTerm}</q></span>
+  </p>
+         <div className="p-3  neutral lg:w-5/6 lg:mx-auto   border-b border-gray-500 border-opacity-15" >
+    {datas.map((item) => (
+            <div key={item.vidId} className="relative rounded-sm overflow-hidden" onClick={() => {
+              handleRedirect(item)
+             }}>
+              <figure >
+                <img className='h-full w-full block object-cover' src={require(item.image)} alt="" />
+              </figure>
+              <p className='title'>{item.title}</p>
             </div>
-            <div className='grid grid-cols-3 gap-5 md:grid-cols-4 lg:grid-cols-5  2xl:grid-cols-6'>
-              {[1,1,1,1,1,1,1,1, 1].map((_, index) => (
-                <Loader h1='h-24' h2='h-6' key={index}/>
-              ))}
-            </div>
-            <Loader h1='' h2='h-4'/>
-          </div> :<>
-          <p className='text-white text-sm font-mono text-center py-3 capitalize'>{datas.length} Movies and Series matches Your search, "{path}".</p>
-            <div className='grid grid-cols-3 gap-5 md:grid-cols-4 lg:grid-cols-5  2xl:grid-cols-6 my-2'>
-                    {isLoading ? <p>Loading</p> : datas.map((data, index) => (
-                        <div key={index} className="hover:shadow-md hover:shadow-sky-400 hover:cursor-pointer my-2 " onClick={() => {
-                            redirect(data.title, data.vidId)
-                        }}>
-                            <img src={require(data.image)} className='img rounded-md h-full object-cover' alt="" />
-                            <p className='text-white text-opacity-50 text-sm tracking-wider font-serif my-1'>{data.title}</p>
-                        </div>
-                    ))}
-                </div>
-          </>}
-            </div>
-            <div className='text-white sticky bottom-0 bg-black flex justify-between items-center px-3 py-2 button border-y-2 border-gray-300 border-opacity-10 text-sm'>
-            <button className='inline-block text-sm ' onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
-              <span>Prev</span>
-            </button>
-            <div className='pagination-container'>
-            {getPaginationButtons().map((button, index) => (
-              <span key={index} className='inline-block'>
-                {button}
-              </span>
-            ))}
-            </div>
-            <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
-              <span>Next</span>
-            </button>
-          </div>
+          ))}
+        </div>
+    </>}
+        </section>
       </main>
-    </Layout>
+      <Footer/>
+    </div>
   )
 }
 

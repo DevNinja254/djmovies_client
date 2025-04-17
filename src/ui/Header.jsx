@@ -8,7 +8,7 @@ const Header = ({dj}) => {
     const navigate = useNavigate()
     const handleSumit = (e) => {
         e.preventDefault();
-        console.log(search);
+        navigate(`/search/${search}`)
     }
     const activeLinkStyle = {
       borderBottom:'3px solid rgb(45, 106, 177)',

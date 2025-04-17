@@ -13,11 +13,12 @@ import Deposit from './pages/Deposit'
 import Authetication from './pages/Authetication'
 import ForgotpwdForm from './pages/ForgotpwdForm'
 import Pwdrest from './pages/Pwdrest'
+import Search from './pages/Search'
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Homepage/>}/>
+        <Route path='/' element={<Deejay/>}/>
         <Route path='/dj/:dj' element={<Deejay/>}/>
         <Route path='/popular/:dj' element={<Popular/>}/>
         <Route path='/genre/:dj' element={<Genre/>}/>
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/account/authenticate' element={<Authetication/>}/>
         <Route path='/account/password_reset' element={<ForgotpwdForm/>}/>
         <Route path='/account/password_reset/:slug' element={<Pwdrest/>}/>
+        <Route path='/search/:searchTerm' element={<Search/>}/>
       </Routes>
     </BrowserRouter>
   )

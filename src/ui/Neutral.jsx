@@ -1,10 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import api, {config} from '../assets/js/api'
 import { useNavigate } from 'react-router-dom'
 import { redirect } from '../assets/js/redirect'
 import { BounceLoader } from 'react-spinners';
 import ClipLoader from "react-spinners/ClipLoader";
 const Neutral = () => {
+  const imageRefs = useRef([]);
+  const [hidden, setHiden] = useState(true)
+  const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const [redirecting, setRedirecting] = useState(false)
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -25,16 +28,17 @@ const Neutral = () => {
   useEffect(() => {
     const neutral = sessionStorage.getItem("neutral")
     const paid = localStorage.getItem("own")
-    if (paid) {
-      setPaidVideo(JSON.parse(paid))
-    }
+    
     if (neutral) {
       setItems(JSON.parse(neutral))
       setLoading(false)
       // console.log("fetceher")
     } else {
       fetchItem()
-      console.log("fetcher2")
+      // console.log("fetcher2")
+    }
+    if (paid) {
+      setPaidVideo(JSON.parse(paid))
     }
   }, [])
   const handleRedirect = async (vida) => {
@@ -57,6 +61,19 @@ const Neutral = () => {
 
     })
   }
+  useEffect(() => {
+    if (imageRefs.current.length === items.length && items.length > 0) {
+      const allLoaded = imageRefs.current.every(
+        (imgRef) => imgRef && imgRef.complete
+      );
+      if (allLoaded) {
+        setAllImagesLoaded(true);
+        // console.log('All images loaded (using refs)!');
+        // Perform your action here
+        setHiden(false)
+      }
+    }
+  }, [items, imageRefs]);
   return (
    <div className='bodyBg1'>
     <div className={`fixed top-0 left-0 w-full h-full bg-opacity-50 z-10   items-center justify-center gap-1 bg-slate-900 ${redirecting ? 'flex' : 'hidden'}`}>
@@ -75,14 +92,14 @@ const Neutral = () => {
         data-testid="loader"
       />
       </div>:<div className="p-3  neutral lg:w-5/6 lg:mx-auto   border-b border-gray-500 border-opacity-15">
-      {items.map((item) => (
+      {items.map((item,index) => (
         <div key={item.vidId} onClick={() => {
           handleRedirect(item)
         }} className="relative rounded-sm overflow-hidden">
           <figure >
-            <img className='h-full w-full block object-cover' src={require(item.image)} alt="" />
+            <img ref={(el) => (imageRefs.current[index] = el)} className='h-full w-full block object-cover' src={require(item.image)} alt="" />
           </figure>
-          <p className='title'>{item.title}</p>
+          <p className={`title ${hidden ? "hidden" : null}`} >{item.title}</p>
         </div>
       ))}
     </div>}

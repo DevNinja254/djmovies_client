@@ -27,7 +27,12 @@ const Dj_Afro = () => {
   //   divRef.current.scrollIntoView()
   //  }
   useEffect(() => {
-    fetchMovies(dj)
+    if (dj) {
+      fetchMovies(dj)
+    } else {
+      fetchMovies("smith")
+    }
+    
     //////////////////paidtitles/////////
     const paid = localStorage.getItem("own")
     if (paid) {

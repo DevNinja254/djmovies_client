@@ -17,9 +17,9 @@ const Links = ({dj = "smith"}) => {
         backgroundColor: 'rgb(45, 106, 177)',
         color: 'white',
       };
-      if(linkRef.current) {
-        linkRef.current.scrollIntoView()
-      }
+      // if(linkRef.current) {
+      //   linkRef.current.scrollIntoView()
+      // }
       return (
         <div className='lg:w-5/6 lg:mx-auto' ref={linkRef}>
           <nav className='mt-4 border-b-4 border-gray-500 border-opacity-15 mx-2 pb-3 '>

@@ -19,14 +19,21 @@ const Play = () => {
         setSource(src)
         
     }
+    const getFilenameFromUrl = (url) => {
+      const parts = url.split('/');
+      return parts[parts.length - 1]; // Get the last part of the URL
+  };
     const download = (src) => {
-        const link = document.createElement('a')
-        link.href = require(src)
-        link.download = src.split("/")[5]
-        link.setAttribute('target', '_blank')
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
+      const link = document.createElement('a');
+      const secureSrc = src.startsWith("http:") ? src.replace("http:", "https:") : src; // Ensure HTTPS
+  
+      link.href = secureSrc;
+      link.setAttribute("target", "_blank")
+      link.setAttribute("download", getFilenameFromUrl(src)); // Use a helper function for filename
+      console.log("mddu")
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
     useEffect(() => {
       window.scrollTo(0,0)
@@ -80,7 +87,7 @@ const Play = () => {
        <div className='md:grid md:grid-cols-3 md:m-3 gap-3 lg:w-5/6 lg:mx-auto xl:w-11/12'> 
         {loading ? <div className='flex justify-center items-center h-screen'></div> : <>
           <div className='col-span-2'>
-            <video className='videoPlay' muted={true} ref={playRef} autoPlay={true} controls={true} loop={true} src={require(playData.video)}></video>
+            <video className='videoPlay' poster={require(playData.image)} controlsList='download' muted={true} ref={playRef} autoPlay={true} controls={true} loop={true} src={require(playData.video)}></video>
             <div>
                 <p className='text-slate-900 font-bold text-lg capitalize font-mono border-b-2 mb-1'>{playData.title}</p>
                 <div className='flex gap-2 textSm capitalize font-bold text-slate-500 pb-2 border-b-2'>
@@ -101,8 +108,9 @@ const Play = () => {
                 <div className='sm:w-5/6 mx-auto'>
                     <div className='grid grid-cols-4 gap-2 items-center p-1  mx-auto border-b-2 border-gray-500 border-opacity-15 my-2'>
                       <p className='text-sm recentColor font-bold capitalize col-span-2'>{playData.video.split("/")[5].split(".")[0]}</p>
-                        <button className='textSm font-bold flex gap-1 items-center bg-slate-900 text-white rounded-lg p-1 hover:bg-slate-800 w-fit' onClick={() => {
-                        download(playData.video)}}>
+                        <button href={playData.video} className='textSm font-bold flex gap-1 items-center bg-slate-900 text-white rounded-lg p-1 hover:bg-slate-800 w-fit' onClick={() => {
+                        download(playData.video)
+                    }}>
                             <Download size={15} /> Download
                         </button>
                         <button className='textSm font-bold flex gap-1 items-center bg-slate-900 text-white rounded-lg p-1 hover:bg-slate-800 w-fit' onClick={() => {
