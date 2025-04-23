@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-    // baseURL: "https://admin.flixshow.xyz/api/v1/"
+    baseURL: "https://admin.flixshow.xyz/api/v1/"
     // baseURL: "https://kingstonemovies.org/api/v1/"
-    baseURL: "http://localhost:8000/api/v1/"
+    // baseURL: "http://localhost:8000/api/v1/"
 })
 
 export default api;
