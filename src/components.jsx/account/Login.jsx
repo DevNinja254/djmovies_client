@@ -47,6 +47,8 @@ const Login = ({settingLoading, isLoading}) => {
             
         }catch(error) {
             settingLoading(false)
+            setLogging(false)
+        settingLoading(false)
             console.log(error)
             if(error.response.data) {
                 console.log(error.response.data)
