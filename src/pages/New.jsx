@@ -7,7 +7,7 @@ import api, { config } from '../assets/js/api'
 const New = () => {
   const [datas, setData] = useState([])
   const [error, setError] = useState(false)
-  const [progres, setProgress] = useState(4)
+  const [progres, setProgress] = useState(10)
   const [myListTitles, setMyListTitles] = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()

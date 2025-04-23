@@ -8,13 +8,13 @@ const Search = () => {
     const {searchTerm} = useParams()
     const [datas, setData] = useState([])
     const [error, setError] = useState(false)
-    const [progres, setProgress] = useState(4)
+    const [progres, setProgress] = useState(10)
     const [myListTitles, setMyListTitles] = useState([])
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
     const fetchData = async(term) => {
       setError(false)
-      setProgress(4)
+      setProgress(10)
       setLoading(true)
       try {
         const response = await api.get(`/videoDetails/?page_size=20&ordering=-date_uploaded&title=${term}`, {

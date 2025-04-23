@@ -10,7 +10,7 @@ import MainLayout from '../layout/MainLayout'
 import Loader from '../ui/Loader'
 
 const Deposit = () => {
-  const [progres, setProgress] = useState(4)
+  const [progres, setProgress] = useState(10)
   const [submitting, setSubmitting] = useState(false)
   const [proid, setProid] = useState("")
   const [submitted, setSubmitted] = useState(false)

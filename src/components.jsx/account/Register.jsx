@@ -7,7 +7,7 @@ import Loader from '../../ui/Loader';
 const Register = () => {
     const [errors, setError] = useState([])
     const [logging, setLogging] = useState(false)
-    const [progres, setProgress] = useState(5)
+    const [progres, setProgress] = useState(10)
 
     const [pwdMatch, setPwdMatch] = useState()
     const [created, setCreated] = useState(false)

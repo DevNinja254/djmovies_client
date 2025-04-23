@@ -4,7 +4,7 @@ import { BounceLoader } from 'react-spinners';
 import api, { config } from '../../assets/js/api';
 import Loader from '../../ui/Loader';
 const PurchaseHistory = () => {
-   const [progres, setProgres] = useState(4)
+   const [progres, setProgres] = useState(10)
     const [datas, setData] = useState([])
      const [redirecting, setRedirecting] = useState(false)
      const navigate = useNavigate()

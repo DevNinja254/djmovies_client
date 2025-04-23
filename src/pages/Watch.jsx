@@ -11,12 +11,12 @@ const Watch = () => {
     const [changing, setChanging] = useState(false)
     const [playData, setPlayData] = useState([])
     const [paidVideo, setPaidVideo] = useState([])
-    const [progres, setProgres] = useState(4)
+    const [progres, setProgres] = useState(10)
     const [error, setError] = useState(false)
     const [source, setSource] = useState("")
     const changeVideo = async(id) => {
         setError(false)
-        setProgres(4)
+        setProgres(10)
         setChanging(true)
         window.scrollTo({top:0, left:0, behavior:"smooth"})
         try {

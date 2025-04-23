@@ -6,7 +6,7 @@ import api, {config} from '../../assets/js/api'
 import Loader from '../../ui/Loader';
 import { useNavigate } from 'react-router-dom';
 const Slide = ({datas, myListTitles, settingNavigating}) => {
-    const [progres, setProgress] = useState(2)
+    const [progres, setProgress] = useState(10)
     const [redirecting, setRedirecting] = useState(false)
     const navigate = useNavigate()
     const [windowSize, setWindowSize] = useState(

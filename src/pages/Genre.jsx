@@ -8,7 +8,7 @@ const Genre = () => {
     const [genre, setGenre] = useState("")
     const [genresTitle, setGenresTitles] = useState([])
     const [videos, setVideos] = useState([])
-    const [progres, setProgress] = useState(2)
+    const [progres, setProgress] = useState(10)
     const [loading, setLoading] = useState(true)
     const [loadingExtra, setLoadingExtra] = useState(true)
     const [loaded, setLoaded] = useState(false)
@@ -86,7 +86,7 @@ const Genre = () => {
     
      }, [])
      const handleRedirect = async (vida) => {
-      setProgress(2)
+      setProgress(10)
       setLoading(true)
       api.get(`/videoDetails/?genre=${vida.genre}&page_size=6&ordering=-date_uploaded`, {
         ...config,

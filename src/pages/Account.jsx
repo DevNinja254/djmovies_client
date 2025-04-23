@@ -22,7 +22,7 @@ const Account = () => {
     const [purchaseHistory, setPurchaseHistory] = useState([])
     const [loading, setLoading] = useState(true)
     const [userData, setUserData] = useState([])
-    const [progres, setProgress] = useState(5)
+    const [progres, setProgress] = useState(10)
     const [update, setUpdate] = useState(false)
     const [admin, setAdmin] = useState(false)
     const  [token, setToken] = useState('')

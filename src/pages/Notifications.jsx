@@ -4,7 +4,7 @@ import api, { config } from '../assets/js/api'
 import Loader from '../ui/Loader'
 
 const Notifications = () => {
-    const [progres, setProgress] = useState(4)
+    const [progres, setProgress] = useState(10)
     const [error, setError] = useState(false)
     const [notification, setNotifications] = useState([])
     const [loading, setLoading] = useState(true)

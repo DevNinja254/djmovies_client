@@ -5,7 +5,7 @@ import api, { config } from '../../assets/js/api';
 import Loader from '../../ui/Loader';
 const Recent = ({datas, myListTitles, settingNavigating}) => {
   const loadMoreRef = useRef(null)
-    const [progres, setProgress] = useState(2)
+    const [progres, setProgress] = useState(10)
     const [error, setError] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [dataMore, setDataMore]= useState([])

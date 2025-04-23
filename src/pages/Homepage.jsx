@@ -6,7 +6,7 @@ import api, { config } from '../assets/js/api'
 import Loader from '../ui/Loader'
 
 const Homepage = () => {
-  const [progres, setProgress] = useState(2)
+  const [progres, setProgress] = useState(10)
   const [datas, setData] =  useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(false)

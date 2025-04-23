@@ -6,7 +6,7 @@ import { MdOutlineMailOutline as Email } from "react-icons/md";
 import api, { config } from '../assets/js/api';
 import Loader from '../ui/Loader';
 const Contact = () => {
-    const [progres, setProgress] = useState(4)
+    const [progres, setProgress] = useState(10)
     const [submitted, setSubmitted] = useState(false)
     const [error, setError] = useState(false)
     const[submitting, setSubmitting] = useState(false)

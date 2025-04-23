@@ -7,13 +7,13 @@ import api, { config } from '../assets/js/api'
 const Guide = () => {
     const [datas, setData] = useState([])
     const [error, setError] = useState(false)
-    const [progres, setProgress] = useState(4)
+    const [progres, setProgress] = useState(10)
     const [loading, setLoading] = useState(true)
     const [redirect, setRedirect] = useState(false)
     const navigate = useNavigate()
     const fetchData = async() => {
         setError(false)
-        setProgress(4)
+        setProgress(10)
         setLoading(true)
         try {
           const response = await api.get(`/videoDetails/?page_size=20&ordering=-date_uploaded&cartegory=guide`, {

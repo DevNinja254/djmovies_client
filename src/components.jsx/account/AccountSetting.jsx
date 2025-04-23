@@ -5,8 +5,8 @@ import Loader from '../../ui/Loader';
 const AccountSetting = ({userData, updateUserData, settUpdated}) => {
     const [imageFile, setImageFile] = useState(null);
     const [submitting, setSubmmiting] = useState(false)
-    const [progresMember, setProgressMember] = useState(5)
-    const [progresProfile, setProgressProfile] = useState(5)
+    const [progresMember, setProgressMember] = useState(10)
+    const [progresProfile, setProgressProfile] = useState(10)
     const [error, setError] = useState([])
     const handleImageChange = (e) => {
       setImageFile(e.target.files[0]);
