@@ -150,7 +150,7 @@ const Account = () => {
           <div className='lg:grid grid-cols-4'>
               {/* links */}
               <div className='m-3 hover:cursor-pointer bg-white p-4 rounded-md textMidSm'>
-                {admin ? <NavLink to="https://admin.flixshow.xyz/api/v1/admin" className={` text-opacity-90 p-2 rounded-md flex items-center gap-2 ${activeLink == "admin" ? 'bgBlue text-white': null}`} target='_blank' onClick={() => {
+                {admin ? <NavLink to="https://admin.flixshow.xyz/admin" className={` text-opacity-90 p-2 rounded-md flex items-center gap-2 ${activeLink == "admin" ? 'bgBlue text-white': null}`} target='_blank' onClick={() => {
                     setActiveLink("admin")
                 }}>
                     <Admin className={`${activeLink != "admin" ? 'text-gray-400' : null}`}/>
