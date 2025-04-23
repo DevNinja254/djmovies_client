@@ -6,9 +6,11 @@ import { BarLoader as Spinner } from 'react-spinners'
 import Form from '../layout/Form'
 import Footer from '../ui/Footer'
 import api, { config } from '../assets/js/api'
+import MainLayout from '../layout/MainLayout'
+import Loader from '../ui/Loader'
 
 const Deposit = () => {
-  const [username, setUsername] = useState("")
+  const [progres, setProgress] = useState(4)
   const [submitting, setSubmitting] = useState(false)
   const [proid, setProid] = useState("")
   const [submitted, setSubmitted] = useState(false)
@@ -17,10 +19,12 @@ const Deposit = () => {
   const [userData, setUserData] = useState({})
   const [authenticated, setAuthenticated] = useState(false)
   const [formData, setFormData] = useState({
-        "amount": 0,
+        "amount": 1,
         "phone_number":"",
   }) 
   const handleSubmit= async (e) => {
+    setError(false)
+    setProgress(10)
     window.scrollTo(0,0)
     setSubmitting(true)
     e.preventDefault();
@@ -32,20 +36,29 @@ const Deposit = () => {
     }
     try {
       console.log("deposited")
-      const res = await api.post('/deposit/', data, config)
-      console.log(res.data)
+      const res = await api.post('/deposit/', data, {
+        ...config,
+        onDownloadProgress: (progressEvent) => {
+          const percentageCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          setProgress(percentageCompleted)
+          // console.log(percentageCompleted)
+        }
+      })
+      // console.log(res.data)
       if(res.data.success) {
-          setSubmitting(false)
+          
           setSubmitted(true)
-          // setTimeout(()=> {
-          //   navigate("/profile")
-          // }, 1000)
+          setTimeout(()=> {
+            setSubmitting(false)
+          }, 1000)
       }else {
           setSubmitting(false)
-          console.log("process failed")
+          setError(true)
+          // console.log("process failed")
       }
     } catch(error) {
-        // setSubmitting(false)
+        setSubmitting(false)
+        setError(true)
         // console.log(error)
     }
   }
@@ -83,37 +96,26 @@ const Deposit = () => {
         }
     }else {
       navigate("/account/authenticate")
-    }
-       
+    }       
 }, [])
   if (submitted) {
     // console.log("sumitted")
-    setTimeout(() => {
+    setTimeout(() => { 
       setSubmitted(false)
     }, 7000)
   }
   return (
-    <Form>
-      <Spinner
-          color="rgba(0,0,0,0.3)"
-          loading={submitting}
-          cssOverride={{
-            "width": "100%",
-            "backgroundColor": "white"
-          }}
-          size={150}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
+    <MainLayout>
+      {submitting ? <Loader progres={progres}/> : null}
         {/* stk sent */}
         {submitted ? <p className='fixed top-1 right-1 z-20 bg-green-600 text-white p-2 text-sm rounded-md font-bold'>Enter your Mpesa pin to complete transaction.</p>:null}
         {/* error processing */}
         {erro ? <p className='fixed top-1 right-1 z-20 bg-red-600 text-white p-2 text-sm rounded-md font-bold'>Error! processing transaction. Try again.</p>:null}
       <main className={`m-6 py-2 autheticate ${submitting ? "opacity-50" : "opacity-100"}`}>
-        <h2 className='text-center'>Mpesa Payment</h2>
+        <h2 className='text-lg my-2 text-slate-600 font-bold'>Mpesa Payment</h2>
         <div>
-            <p className='border-b-2 border-b-gray-600 border-opacity-15'>Instructions</p>
-            <div className=''>
+            <p className='border-b-2 border-b-gray-600 border-opacity-15 text-sm textBlue font-bold'>Instructions</p>
+            <div className="block textMidSm text-gray-600 mt-2">
                 <TypeAnimation
                 style={{ whiteSpace: 'pre-line', height: 'fit-content', display: 'block' }} 
                     sequence={[
@@ -122,22 +124,22 @@ const Deposit = () => {
                     ]}
                     html={true}
                     wrapper='p'
-                    className='my-3 text-sm fontNewTimes tracking-wide text-gray-800'
+                    className="block textMidSm text-gray-600 mt-2"
                     speed={200}
                 />
               </div> 
         </div>
       <form onSubmit={handleSubmit}>
-            <label  className="block text-sm my-2" htmlFor="amount">Amount</label>
-            <input type="number"  className="outline-none bg-gray-600 block w-full py-2 px-1 rounded-sm bg-opacity-15 text-gray-600" name='amount'  value={formData.amount} required={true} onChange={handleChange}/>
-            <label  className="block text-sm my-2" htmlFor="number">Phone Number</label>
-            <input type="number"  className="outline-none bg-gray-600 block w-full py-2 px-1 rounded-sm bg-opacity-15 text-gray-600" name='phone_number' required={true} value={formData.phone_number} onChange={handleChange}/>
+            <label  className="block textMidSm text-gray-600 mt-2" htmlFor="amount">Amount</label>
+            <input type="number"   className='textMidSm p-1 rounded-sm  border block w-full outline-none bg-white text-gray-600' name='amount'  value={formData.amount} required={true} onChange={handleChange}/>
+            <label  className="block textMidSm text-gray-600 mt-2" htmlFor="number">Phone Number</label>
+            <input type="number"   className='textMidSm p-1 rounded-sm  border block w-full outline-none bg-white text-gray-600' name='phone_number' required={true} value={formData.phone_number} onChange={handleChange}/>
             <div>
-            <button  className={` bg-sky-600  w-full p-2 rounded-sm text-white font-bold hover:opacity-85 block mt-2`} type='submit' disabled={submitting} onSubmit={handleSubmit}>Deposit</button>
+            <button  className={` bgBlue  w-full p-2 rounded-sm text-white font-bold hover:opacity-85 block mt-2`} type='submit' disabled={submitting} onSubmit={handleSubmit}>{submitting ? 'Sending stk...' : "Deposit"}</button>
             </div>
         </form>
       </main>
-    </Form>
+    </MainLayout>
   )
 }
 

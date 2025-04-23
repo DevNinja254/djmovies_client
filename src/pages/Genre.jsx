@@ -1,117 +1,150 @@
-import React, {useState, useEffect} from 'react'
-import Layout from '../layout/Layout'
-import { useNavigate, useParams } from 'react-router-dom'
-import { createLoop } from '../assets/js/createloop'
-import ClipLoader from "react-spinners/ClipLoader";
+import React, { useEffect, useState } from 'react'
+import MainLayout from '../layout/MainLayout'
 import api, { config } from '../assets/js/api'
-import { BounceLoader } from 'react-spinners';
+import { useNavigate } from 'react-router-dom'
+import Loader from '../ui/Loader'
+
 const Genre = () => {
-    const {dj} = useParams()
-    const [genre, setGenre] = useState('Action')
-    const genres = ["Action", "horror", "Adventure", "comedy", "sci fi", "romance"]
-    const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [redirecting, setRedirecting] = useState(false)
-    const [paidTitles, setPaidTitles] = useState([])
-    const navigate = useNavigate() 
-    const linkStyle = {
-      display: 'inline-block',
-      padding: '5px 10px',
-      textDecoration: 'none',
-      color: '#333', // Default text color
-      backgroundColor: '#f0f0f0', // Default background color
-      marginRight: '5px',
-      fontSize: '14px',
-      
-    };
-  
-    const activeLinkStyle = {
-      backgroundColor: 'orange',
-      color: 'white',
-    };
-    const fetchData = async(dj, genre) => {
-      setLoading(true)
-      const response = await api.get(`/videoDetails/?type=dj_${dj}&ordering=-date_uploaded&page_size=1000&genre=${genre}`, config)
-      const data = response.data.results
-      setData(data)
-      setLoading(false)
-    }
-    useEffect(() => {
-      fetchData(dj,genre)
-      const paid = localStorage.getItem("own")
-      if (paid) {
-        setPaidTitles(JSON.parse(paid))
+    const [genre, setGenre] = useState("")
+    const [genresTitle, setGenresTitles] = useState([])
+    const [videos, setVideos] = useState([])
+    const [progres, setProgress] = useState(2)
+    const [loading, setLoading] = useState(true)
+    const [loadingExtra, setLoadingExtra] = useState(true)
+    const [loaded, setLoaded] = useState(false)
+    const [myListTitles, setMyListTitles] = useState([])
+    const navigate = useNavigate()
+      useEffect(() => {
+        if (loaded) {
+          fetchMovie(genre)
+        } else {
+          const algenre = sessionStorage.getItem('genre')
+          if (algenre) {
+            const datas = JSON.parse(algenre)
+            setGenre(datas[0].title)
+            fetchMovie(datas[0].title)
+            let title = []
+            for (const dat of datas) {
+              title.push(dat.title)
+            }
+            setGenresTitles(title)
+            setLoaded(true)
+            setProgress(100)
+            setTimeout(() => {
+              setLoading(false)
+            }, 1000)
+            
+          } else {
+            fetchgenre()
+          }          
+        }
+        
+      }, [genre])
+      const fetchgenre = async() => {
+        setLoading(true)
+        api.get("/genreTotal", {
+          ...config,
+          onDownloadProgress: (progress) => {
+            const percentageCompletedGenre = Math.round((progress.loaded * 100) / progress.total)
+            setProgress(percentageCompletedGenre)
+          }
+        })
+        .then(response => {
+          const data = response.data.results
+          setGenre(data[0].title)
+          fetchMovie(data[0].title)
+          let title = []
+          for (const dat of data) {
+            title.push(dat.title)
+          }
+          sessionStorage.setItem('genre', JSON.stringify(data))
+          setLoading(false)
+          setLoaded(true)
+          setGenresTitles(title)
+        })
+        
       }
-    }, [genre])
-    const handleRedirect = async (vida) => {
-      setRedirecting(true)
-      // console.log(vida)
-      api.get(`/videoDetails/?genre=${vida.genre}&page_size=6&ordering=-date_uploaded`, config)
+      const fetchMovie = async(gen) => {
+        setLoading(true)
+        // console.log(genre, 'searching')
+        const response = await api.get(`/videoDetails/?genre=${gen}&ordering=-date_uploaded&page_size=1000`, {
+          ...config,
+          onDownloadProgress: (progress) => {
+            const percentageCompletedGenre = Math.round((progress.loaded * 100) / progress.total)
+            setProgress(percentageCompletedGenre)
+          }
+        })
+        const data = await response.data.results
+        setVideos(data)
+        setLoading(false)
+      }
+     useEffect(() => {
+      const mytitles = localStorage.getItem('myListTitles')
+      if (mytitles) {
+        setMyListTitles(JSON.parse(mytitles))
+      }
+    
+     }, [])
+     const handleRedirect = async (vida) => {
+      setProgress(2)
+      setLoading(true)
+      api.get(`/videoDetails/?genre=${vida.genre}&page_size=6&ordering=-date_uploaded`, {
+        ...config,
+        onDownloadProgress: (progressEvent) => {
+          const percentageCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          setProgress(percentageCompleted)
+        }
+      })
       .then(res1 => {
         const data1 = res1.data.results
-        sessionStorage.setItem("similar", JSON.stringify(data1))
+        localStorage.setItem("similar", JSON.stringify(data1))
         sessionStorage.setItem("toPlay", JSON.stringify(vida))
-        if (paidTitles) {
-          if(paidTitles.includes(vida.title)){
-            navigate(`/play/${vida.vidId}/`)
+        if (myListTitles) {
+          if(myListTitles.includes(vida.title)){
+            navigate(`/watch/${vida.vidId}/`)
           } else {
-            navigate(`/store/${vida.vidId}/`)
+            navigate(`/video/${vida.vidId}/`)
           }
         }else {
-          navigate(`/store/${vida.vidId}/`)
+          navigate(`/video/${vida.vidId}/`)
         }
   
       })
     }
   return (
-    <Layout dj={dj}>
-      <div className={`fixed top-0 left-0 w-full h-full bg-opacity-50 z-10   items-center justify-center gap-1 bg-slate-900 ${redirecting ? 'flex' : 'hidden'}`}>
-                    <BounceLoader color="#36D7B7" loading={redirecting} size={20} />
-                    <BounceLoader color="#36D7B7" loading={redirecting} size={20} />
-                    <BounceLoader color="#36D7B7" loading={redirecting} size={20} />
-                    <BounceLoader color="#36D7B7" loading={redirecting} size={20} />
-                    </div>
-      <div style={{
-            borderBottom: '1px solid orange',
-            marginTop: '0.5rem',
-            marginBottom: '0.5rem'
-        }}>
-          <div className="p-3 pb-0  neutral lg:w-5/6 lg:mx-auto " >
-        {genres.map((item) => (
-          <div key={item} style={item.toLowerCase() === genre.toLowerCase() ? {...linkStyle, ...activeLinkStyle} : linkStyle} className="inline-block rounded-sm overflow-hidden hover:cursor-pointer">
-            <p className='capitalize' onClick={() => {
-              setGenre(item)
-            }} >{item}</p>
-          </div>
+    <MainLayout>
+      {loading ? <Loader progres={progres}/> : null}
+         <div className='my-2 px-3 pb-3 flex items-center gap-3  flex-wrap'>
+        {genresTitle.map((gen, index) => (
+          <span key={index} className={` p-2 textMidSm capitalize  font-bold rounded-sm hover:cursor-pointer my-2 ${gen == genre ? "titleBg text-white" : "bg-gray-600 bg-opacity-15 text-gray-700"}`} onClick={() => {
+            setGenre(gen)
+          }}>
+            {gen}
+          </span>
         ))}
       </div>
-        </div>
-      
-        <section className='min-h-60'>
-        {loading ? <div className='h-40 grid place-content-center'>
-      <ClipLoader
-        color={"gray"}
-        loading={loading}
-        // cssOverride={override}
-        size={50}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
+      <div className='px-2'>
+       
+        <p className='textMidSm text-gray-500 text-center whitespace-nowrap overflow-hidden py-2 hyphen-separator'>
+         <span>{videos.length} {genre} movies and series</span>
+        </p>
       </div>
-    :   <div className="p-3  neutral lg:w-5/6 lg:mx-auto   border-b border-gray-500 border-opacity-15">
-          { data.map((item) => (
-            <div key={item.vidId} className="relative rounded-sm overflow-hidden" onClick={() => {
-              handleRedirect(item)
-             }}>
-              <figure className='fig'>
-                <img className='h-full w-full block object-cover' src={require(item.image)} alt="" />
-              </figure>
-              <p className='title z-30'>{item.title}</p>
-            </div>
-          ))}
-        </div>}
-        </section>
-    </Layout>
+      {/* videos */}
+      <div className='grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 px-2 md:w-11/12 md:mx-auto'>
+            {videos.map((data, index) => (
+                <div key={index} style={{ lineHeight: '0.5rem', marginBottom: "0.5rem" }} onClick={() => {
+                  handleRedirect(data)
+                }}>
+                    <figure>
+                        <img src={require(data.image)} alt="" className='imgRecent hover:scale-105 transition-all duration-100 ease-linear' />
+                    </figure>
+                    <p className='capitalize text-sm text-gray-700 font-bold ' >{data.title}: <span className='textSm font-normal'>{data.season}</span></p>
+                    <p className='textMidSm text-gray-600 capitalize font-serif' >{data.dj}</p>                    
+                </div>
+            ))}
+        </div>
+            {/* <button onClick={fetchMovie} className='bg-gray-600 block w-5/6 mx-auto my-1 p-1 rounded-md text-sm font-bold text-gray-200'>Load more Results</button> */}
+    </MainLayout>
   )
 }
 

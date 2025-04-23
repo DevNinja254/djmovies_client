@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { BarLoader as Spinner } from 'react-spinners'
 import api, { config } from "../assets/js/api"
 import { useParams } from 'react-router-dom'; // or your routing library
+import MainLayout from '../layout/MainLayout'
 
 function ResetPasswordForm() {
   const [pwdMatch, setPwdMatch]  = useState(false)
@@ -16,6 +17,7 @@ function ResetPasswordForm() {
   const [pwd1, setPwd1] = useState("") 
   const [pwd2, setPwd2] = useState("") 
   const [change, setChange] = useState(false)
+  const [progres, setProgress] = useState(5)
   // console.log(slug)
   const navigate = useNavigate()
   const handleSubmit= async (e) => {
@@ -34,7 +36,14 @@ function ResetPasswordForm() {
           new_password: pwd1
         }
         try {
-          const res = await api.post('/password_reset/reset/', data, config)
+          const res = await api.post('/password_reset/reset/', data, {
+                          ...config,
+                          onDownloadProgress: (progressEvent) => {
+                              const percentageCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                              setProgress(percentageCompleted)
+                              // console.log(percentageCompleted)
+                            }
+                      })
             // console.log(res.data)
               setSubmitting(false)
               setSubmitted(true)
@@ -83,18 +92,8 @@ function ResetPasswordForm() {
         document.title = "Password | reset"
       }, [])
     return (
-        <Layout>
-                <Spinner
-          color="rgba(0,0,0,0.3)"
-          loading={submitting}
-          cssOverride={{
-            "width": "100%",
-            "backgroundColor": "white"
-          }}
-          size={150}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
+        <MainLayout>
+                {submitting ? <Loader progres={progres}/> : null}
         {/* stk sent */}
         {submitted ? <p className='fixed top-1 right-1 z-20 bg-green-600 text-white p-2 text-sm rounded-md font-bold'>Password reset link sent.</p>:null}
         {/* error processing */}
@@ -117,7 +116,7 @@ function ResetPasswordForm() {
             </div>
         </form>
       </main>
-    </Layout>
+    </MainLayout>
     );
 }
 

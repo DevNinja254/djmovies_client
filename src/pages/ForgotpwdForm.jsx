@@ -52,37 +52,29 @@ const [erro, setError] = useState(false)
     }, 4000)
   }
   return (
-    <Layout>
-                <Spinner
-          color="rgba(0,0,0,0.3)"
-          loading={submitting}
-          cssOverride={{
-            "width": "100%",
-            "backgroundColor": "white"
-          }}
-          size={150}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
+    <div>
+                
         {/* stk sent */}
         {submitted ? <p className='fixed top-1 right-1 z-20 bg-green-600 text-white p-2 text-sm rounded-md font-bold'>Password reset link sent.</p>:null}
         {/* error processing */}
         {erro ? <p className='fixed top-1 right-1 z-20 bg-red-600 text-white p-2 text-sm rounded-md font-bold'>Error! sending email. Try again.</p>:null}
-      <main className={`m-6 py-2 autheticate ${submitting ? "opacity-50" : "opacity-100"}`}>
-        <h2 className='text-center'>Reset Forgot Password.</h2>
         {display ? <p className='my-2 bg-red-700 bg-opacity-15 text-green-700 p-2 text-center text-sm font-bold rounded-md'>
             Check your email for Password reset link.
         </p>:null}
+      <div className='bg-white m-3 rounded-sm p-4'>
+        <h2 className='text-lg my-2 text-slate-600 font-bold'>Reset Forgot Password.</h2>
+        
       <form onSubmit={handleSubmit}>
-            <label  className="block text-sm my-2" htmlFor="emial">Email</label>
-            <input type="email"  className="outline-none bg-gray-600 block w-full py-2 px-1 rounded-sm bg-opacity-15 text-gray-600" name='email'  value={formData.email} required={true} onChange={handleChange}/>
-            
-            <div>
+        <div className=' p-2 text-sm font-mono capitalize text-gray-600'>
+          <label  className="block text-sm my-2" htmlFor="email">Email</label>
+          <input type="email"  className="outline-none bg-gray-600 block w-full py-2 px-1 rounded-sm bg-opacity-15 text-gray-600" name='email' autoFocus  value={formData.email} required={true} onChange={handleChange}/>
+        </div>
+        <div>
             <button  className={` bg-sky-600  w-full p-2 rounded-sm text-white font-bold hover:opacity-85 block mt-2`} type='submit' disabled={submitting} onSubmit={handleSubmit}>Submit</button>
             </div>
         </form>
-      </main>
-    </Layout>
+      </div>
+    </div>
   )
 }
 

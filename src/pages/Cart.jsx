@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Account from '../layout/Account'
 import { useNavigate } from 'react-router-dom'
 import api, { config } from '../assets/js/api'
+import MainLayout from '../layout/MainLayout'
 const Cart = () => {
     const carr = [1,1,1,1]
     const [total, setTotal] = useState(0)
@@ -65,19 +66,19 @@ const Cart = () => {
                             .then(res => {
                                 // console.log(res.data)
                                 const data = res.data
-                                const paidvid = localStorage.getItem("ownVideo")
-                                const paday = localStorage.getItem("own")
+                                const paidvid = localStorage.getItem("myList")
+                                const paday = localStorage.getItem("myListTitles")
                                 if (paidvid) {
                                 const paid = JSON.parse(paidvid)
-                                localStorage.setItem("ownVideo", JSON.stringify([...paid, data]))
+                                localStorage.setItem("myList", JSON.stringify([...paid, data]))
                                 } else {
-                                localStorage.setItem("ownVideo", JSON.stringify([data]))
+                                localStorage.setItem("myList", JSON.stringify([data]))
                                 }
                                 if (paday) {
                                 const paid = JSON.parse(paday)
-                                localStorage.setItem("own", JSON.stringify([...paid, carty.video_name]))
+                                localStorage.setItem("myListTitles", JSON.stringify([...paid, carty.video_name]))
                                 }else {
-                                localStorage.setItem("own", JSON.stringify([carty.video_name]))
+                                localStorage.setItem("myListTitles", JSON.stringify([carty.video_name]))
                                 }
                                 // remove(res.data.video_name)
                             })
@@ -85,9 +86,9 @@ const Cart = () => {
                         }
                         localStorage.removeItem("cart")
                     })
-                    navigate("/profile")
+                    navigate("/account")
                 } else {
-                    navigate("/account/deposit/")
+                    navigate("/deposit/")
                 }
             }
         } else {
@@ -123,9 +124,14 @@ const Cart = () => {
    
        
   return (
-    <Account>
+    <MainLayout>
       <main className='cart text-white'>
-        <h2 className=' text-center py-3 font-bold font-mono'>Your Cart ({cart.length} items)</h2>
+        <div className='px-2'>
+       
+        <p className='textMidSm text-gray-500 text-center whitespace-nowrap overflow-hidden py-2 hyphen-separator'>
+         <span>Your Cart ({cart.length} item/s)</span>
+        </p>
+      </div>
         <div className='p-3 lg:w-10/12 m-auto'>
             <div className='sm:grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-4'>
                 {cart.map((cat, index) => (
@@ -136,7 +142,7 @@ const Cart = () => {
                     <div className='text-sm font-mono capitalize  text-amber-900'>
                         <p className=''>{cat.video_name}</p>
                         <p>{cat.season}</p>
-                        <p>{(cat.type).split("_").join(" ")}</p>
+                        <p>{cat.dj}</p>
                         <p>Ksh.{cat.price}</p>
                         <span className='bg-red-700 text-white p-1 mt-2 block text-center rounded-md text-sm font-bold hover:cursor-pointer hover:opacity-80' onClick={() => {
                             remove(cat.video_name)
@@ -155,7 +161,7 @@ const Cart = () => {
         </div>
         
       </main>
-    </Account>
+    </MainLayout>
   )
 }
 

@@ -42,9 +42,9 @@ header {
 .neutral figure {
     height:27vh;
 }
-.figure {
+/* .figure {
     height: 20vh;
-}
+} */
 .title {
     position: absolute;
     bottom: 0;
@@ -135,7 +135,7 @@ height: 40vh;
     }
     .videoPlay {
         height: 50vh;
-        border-radius: 10px;
+        /* border-radius: 10px; */
         width: 100%;
         background: #000;
     }
@@ -165,7 +165,7 @@ height: 40vh;
 }
 @media screen and  (min-width: 1024px) {
     .videoPlay {
-        height: 70vh;
+        height: 40vh;
         width: 100%;
         background: #000;
     }
@@ -176,4 +176,172 @@ height: 40vh;
         margin-left: auto;
         margin-right: auto;
     }  
+    .videoPlay {
+        height: 60vh;
+        width: 100%;
+        background: #000;
+    }
 }
+/* -------------start mainlayout styling ---------------------- */
+
+#mainLayout header {
+    background: rgb(51, 53, 69);
+    /* background: ; */
+}
+#mainLayout header .active {
+    color: white;
+    font-weight: bold;
+}
+#mainLayout .side .active {
+    color: white;
+    font-weight: bold;
+}
+.profileImg {
+    width: 30px;
+    height: 30px; 
+    object-fit: cover;
+    border-radius: 50%;
+}
+body::-webkit-scrollbar{
+    width: 10px;
+    height: 50px;
+}
+body::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+body::-webkit-scrollbar-thumb {
+    background-color: rgba(66, 66, 66, 0.295); /* Color of the thumb */
+    border-radius: 2px;
+}
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+.container::-webkit-scrollbar{
+    width: 8px;
+    height: 50px;
+}
+.continer::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+.container::-webkit-scrollbar-thumb {
+    background-color: rgba(66, 66, 66, 0.295); /* Color of the thumb */
+    border-radius: 2px;
+}
+.container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+.slider {
+    overflow-x: scroll;
+}
+.slider::-webkit-scrollbar{
+    width: 0px;
+    /* height: 50px; */
+}
+.slideFig {
+    height: 17vh;
+    min-width: 60%;
+    max-width: 60%;
+}
+.imgRecent {
+    height: 25vh;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.similarImg {
+    height: 20vh;
+    width:100%;
+}
+@media screen and (min-width: 640px) {
+    .slideFig {
+        height: 8vh;
+        min-width: 20%;
+        max-width: 20%;
+    }
+}
+@media screen and (min-width: 1024px) {
+    .slideFig {
+        height: 20vw;
+        min-width: 40%;
+        max-width: 20%;
+    }
+}
+.bgBlue {
+    background: rgb(78, 115, 223);
+}
+.textBlue {
+    color: rgb(78, 115, 223);
+}
+/* ------------------about -----------page */
+/* AboutPage.css */
+.about-container {
+    padding: 20px;
+    font-family: sans-serif;
+  }
+  
+  .about-overview,
+  .about-ceo,
+  .about-team,
+  .about-vision,
+  .about-contact {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .about-ceo .ceo-profile {
+    display: flex;
+    align-items: center;
+  }
+  
+  .about-ceo .ceo-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+  }
+  
+  .about-ceo .ceo-info h3 {
+    margin-top: 0;
+  }
+  
+  .about-team .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .about-team .team-member {
+    text-align: center;
+  }
+  
+  .about-team .team-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .about-team h3 {
+    margin-top: 0;
+    font-size: 1.2em;
+  }
+  
+  .about-vision p,
+  .about-contact p {
+    line-height: 1.6;
+  }
+  
+  .about-contact a {
+    color: blue;
+    text-decoration: none;
+  }
+  
+  .about-contact a:hover {
+    text-decoration: underline;
+  }
