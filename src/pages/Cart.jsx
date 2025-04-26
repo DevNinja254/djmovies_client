@@ -135,11 +135,11 @@ const Cart = () => {
         <div className='p-3 lg:w-10/12 m-auto'>
             <div className='sm:grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-4'>
                 {cart.map((cat, index) => (
-                    <div key={index} className='grid grid-cols-2 gap-3 bg-slate-600 p-3 rounded-md bg-opacity-30 my-3'>
+                    <div key={index} className='grid grid-cols-3 gap-5 border border-opacity-20 sm:grid-cols-2 border-gray-400 p-3 rounded-md bg-opacity-30 my-3'>
                     <figure>
                         <img src={require(cat.image_url)} className='img rounded-md block' alt="" />
                     </figure>
-                    <div className='text-sm font-mono capitalize  text-amber-900'>
+                    <div className='text-sm font-mono capitalize  text-white col-span-2 sm:col-span-1'>
                         <p className=''>{cat.video_name}</p>
                         <p>{cat.season}</p>
                         <p>{cat.dj}</p>

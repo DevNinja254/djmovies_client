@@ -18,7 +18,10 @@ const Watch = () => {
         setError(false)
         setProgres(10)
         setChanging(true)
-        window.scrollTo({top:0, left:0, behavior:"smooth"})
+        if (playRef.current) {
+          playRef.current.pause()
+          playRef.current.scrollIntoView()
+        }
         try {
           setRedirecting(true)
           const response = await api.get(`/videoDetails/${id}`, {
@@ -93,11 +96,11 @@ const Watch = () => {
         {error ? <p className='fixed top-2 right-2 bg-red-600 text-white font-bold textMidSm p-2 rounded-md z-20'>Error! changing video, Try again.</p> : null}
         {loading | changing ? <Loader progres={progres}/> : null}
            {loading ? null : <>
-            <div className='col-span-2'>
-                <video className='videoPlay text-white textMidSm' poster={require(playData.image)} controlsList='download' muted={false} ref={playRef} autoPlay={true} controls={true} loop={true} src={require(playData.video)}></video>
-                <div>
-                    <p className='text-slate-900 font-bold text-lg capitalize font-mono border-b-2 mb-1'>{playData.title}</p>
-                    <div className='flex gap-2 textSm capitalize font-bold text-slate-500 pb-2 border-b-2'>
+            <div className='col-span-2 mt-10'>
+                <video  className='videoPlay  text-white textMidSm' poster={require(playData.image)} controlsList='download' muted={true} ref={playRef} autoPlay={true} controls={true} loop={true} src={require(playData.video)}></video>
+                <div className='m-3'>
+                    <p className='text-slate-200 font-bold text-lg capitalize font-mono border-b-2 mb-1 border-gray-400 border-opacity-20'>{playData.title}</p>
+                    <div className='flex gap-2 textSm capitalize font-bold text-slate-200 pb-2 border-gray-400  border-b-2 border-opacity-20'>
                         <p>{playData.genre}</p>
                         <p>|</p>
                         <p>{playData.cartegory}</p>
@@ -108,13 +111,13 @@ const Watch = () => {
                         <p>|</p>
                         <p>Ksh.{playData.price}</p>
                     </div>
-                    <p className='text-sm text-slate-700 font-serif tracking-wide my-2'>{playData.synopsis}.</p>
+                    <p className='text-sm text-slate-300 font-serif tracking-wide my-2'>{playData.synopsis}.</p>
                 </div>
                   <div>
                     <h3 className='text-sm font-bold'>Resource:</h3>
                     <div className='sm:w-5/6 mx-auto'>
                         <div className='grid grid-cols-4 gap-2 items-center p-1  mx-auto border-b-2 border-gray-500 border-opacity-15 my-2'>
-                            <p className='text-sm recentColor font-bold capitalize col-span-2'>{playData.video.split("/")[5].split(".")[0]}</p>
+                            <p className='text-sm text-gray-400 font-bold capitalize col-span-2'>{playData.video.split("/")[5].split(".")[0]}</p>
                             <a href={playData.video} download={playData.video.split("/")[5].split(".")[0]} target="_blank" className='textSm font-bold flex gap-1 items-center bg-slate-900 text-white rounded-lg p-1 hover:bg-slate-800 w-fit' >
                                 <Download size={15} /> Download
                             </a>
@@ -126,7 +129,7 @@ const Watch = () => {
                         </div>  
                         {playData.additional_files.map((vida) => (
                             <div className='grid grid-cols-4 gap-2 items-center p-1  mx-auto border-b-2 border-gray-500 border-opacity-15 my-2' key={vida}>
-                            <p className='text-sm recentColor font-bold capitalize col-span-2'>{vida.file.split("/")[5].split(".")[0]}</p>
+                            <p className='text-sm text-gray-400 font-bold capitalize col-span-2'>{vida.file.split("/")[5].split(".")[0]}</p>
                                 <a href={vida.file} className='textSm font-bold flex gap-1 items-center bg-slate-900 text-white rounded-lg p-1 hover:bg-slate-800 w-fit' download={vida.file.split("/")[5]}>
                                     <Download size={15} /> Download
                                 </a>
@@ -142,10 +145,10 @@ const Watch = () => {
                 </div>
             </div>
             <div>
-                <p className='p-3 pb-1 text-lg font-bold'>Other Purchased Videos</p>
-                <div className='grid grid-cols-3 gap-3 p-3 pt-0 bg-white lg:grid-cols-2 '>
+                <p className='p-3 pb-1 text-lg font-bold text-white'>Other Purchased Videos</p>
+                <div className='grid grid-cols-3 gap-3 p-3 rounded-md bg-opacity-20 bg-white lg:grid-cols-2 mx-3 '>
                 {paidVideo.map((item) => (
-                    <div key={item.video_id} className='flex flex-col shadow-sm shadow-gray-300 hover:shadow hover:shadow-sky-300' onClick={() => {
+                    <div key={item.video_id} className='flex flex-col  hover:shadow hover:shadow-sky-300' onClick={() => {
                     changeVideo(item.video_id)
                     }}>
                     <figure className='figure relative rounded-sm overflow-hidden hover:scale-105 transition-all duration-300'>

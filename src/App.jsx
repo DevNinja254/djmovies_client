@@ -24,6 +24,8 @@ import Contact from './pages/Contact'
 import About from './pages/About'
 import Notifications from './pages/Notifications'
 import Guide from './pages/Guides'
+import Category from './pages/Category'
+import Suggestion from './pages/Suggestion'
 const App = () => {
   return (
     <BrowserRouter>
@@ -31,8 +33,7 @@ const App = () => {
         <Route path='/' element={<Homepage/>}/>
         <Route path='/dj/:dj' element={<Deejay/>}/>
         <Route path='/popular/:dj' element={<Popular/>}/>
-        <Route path='/genre/:dj' element={<GenreCopy/>}/>
-        <Route path="/store/:id" element={<Store/>}/>
+        
         <Route path="/play/:id" element={<Play/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/cart' element={<Cart/>}/>
@@ -42,6 +43,7 @@ const App = () => {
         <Route path='/search/:searchTerm' element={<Search/>}/>
         {/* ------------------------------------------------------ */}
         <Route path='/genre' element={<Genre/>}/>
+        <Route path='/genre/:gen' element={<Genre/>}/>
         <Route path="/deejays" element={<Dj/>} />
         <Route path="/new" element={<New/>} />
         <Route path="/video/:id" element={<Mp4/>}/>
@@ -51,6 +53,8 @@ const App = () => {
         <Route path="/about" element={<About/>} />
         <Route path='/notifications' element={<Notifications/>} />
         <Route path='/guide' element={<Guide/>} />
+        <Route path="/store/:category" element={<Category/>}/>
+        <Route path="/suggestions" element={<Suggestion/>}/>
       </Routes>
     </BrowserRouter>
   )

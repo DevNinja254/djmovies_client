@@ -47,16 +47,17 @@ const Notifications = () => {
     {error ? <p className='fixed top-2 right-2 bg-red-600 text-white font-bold textMidSm p-2 rounded-sm'>Error! loading results.</p> : null}
     {loading ? <Loader progres={progres}/> : null}
     {loading ? null : <>
-        <div className='px-2'>
+    <h1 className='mt-10 titleH1'>Notifications</h1>
+        <div className='px-2 '>
        <p className='textMidSm text-gray-500 text-center whitespace-nowrap overflow-hidden py-2 hyphen-separator'>
         <span>{notification.length} notifications</span>
        </p>
     </div>
     <div className='p-3 grid gap-3 md:grid-cols-2 lg:w-10/12 lg:mx-auto'>
             {notification.map(notify => (
-                <div key={notify.noty_id} className='shadow-sm shadow-gray-500 p-2'>
+                <div key={notify.noty_id} className='shadow-sm shadow-gray-300 p-2'>
                     <p className='text-center text-sm py-2 textBlue font-bold'>{convertTimestampToDateTime(notify.date_notified)}</p>
-                    <p className='textMidSm text-gray-700'>{notify.message}</p>
+                    <p className='textMidSm text-gray-300'>{notify.message}</p>
                 </div>
             ))}
         </div>

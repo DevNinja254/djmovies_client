@@ -34,7 +34,7 @@ const Login = ({settingLoading, isLoading}) => {
             localStorage.setItem("auth", data.tokens.access)
             localStorage.setItem("myList", JSON.stringify(data.purchase))
             localStorage.setItem("user", JSON.stringify(data.username))
-            localStorage.setItem("pic_url", JSON.stringify(`http://localhost:8000${data.profile.profile_pic}`))
+            localStorage.setItem("pic_url", JSON.stringify(`https://admin.flixshow.xyz${data.profile.profile_pic}`))
             const ownTitles = []
             for (const tite of data.purchase) {
                 ownTitles.push(tite.video_name)
@@ -82,7 +82,7 @@ const Login = ({settingLoading, isLoading}) => {
             </div>
             
             <div className='col-span-2'>
-                <NavLink to="/account/password_reset" className='my-3 text-sm text-sky-500 font-bold hover:cursor-pointer '>Forgot your password?</NavLink>
+                {/* <NavLink to="/account/password_reset" className='my-3 text-sm text-sky-500 font-bold hover:cursor-pointer '>Forgot your password?</NavLink> */}
                 <div >
                 <button disabled={logging} className={`bg-sky-700 block w-full p-2 rounded-sm text-white font-bold hover:opacity-85' type='submit ${isLoading ? "opacity-50": null}`}>{logging ? 'signing in...' : 'sign in'}</button>
                 </div>

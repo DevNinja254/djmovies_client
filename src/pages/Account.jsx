@@ -110,7 +110,7 @@ const Account = () => {
           } finally {
             localStorage.removeItem("admin")
             localStorage.removeItem("authorized")
-            localStorage.removeItem("similar")
+            sessionStorage.removeItem("similar")
             localStorage.removeItem("auth_refresh")
             localStorage.removeItem("auth")
             localStorage.removeItem("myList")
@@ -126,7 +126,7 @@ const Account = () => {
         }
   return (
     <MainLayout >
-       <div className='bg-slate-800 bg-opacity-20 pb-1  ' style={{
+       <div className='bg-slate-800 bg-opacity-20 pb-1 ' style={{
         minHeight: "93vh"
        }}>  {loading | logginOut ? <Loader progres={progres}/> : null}
        {update ? <p className='fixed top-1 right-1 bg-green-600 textMidSm text-white font-bold p-2 rounded-md z-10'>Account updated successful</p> : null}

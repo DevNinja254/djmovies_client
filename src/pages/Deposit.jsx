@@ -111,8 +111,8 @@ const Deposit = () => {
         {submitted ? <p className='fixed top-1 right-1 z-20 bg-green-600 text-white p-2 text-sm rounded-md font-bold'>Enter your Mpesa pin to complete transaction.</p>:null}
         {/* error processing */}
         {erro ? <p className='fixed top-1 right-1 z-20 bg-red-600 text-white p-2 text-sm rounded-md font-bold'>Error! processing transaction. Try again.</p>:null}
-      <main className={`m-6 py-2 autheticate ${submitting ? "opacity-50" : "opacity-100"}`}>
-        <h2 className='text-lg my-2 text-slate-600 font-bold'>Mpesa Payment</h2>
+      <main className={`m-6 mt-20 py-2 autheticate ${submitting ? "opacity-50" : "opacity-100"}`}>
+        <h2 className='text-lg my-2 text-slate-400 font-bold'>Mpesa Payment</h2>
         <div>
             <p className='border-b-2 border-b-gray-600 border-opacity-15 text-sm textBlue font-bold'>Instructions</p>
             <div className="block textMidSm text-gray-600 mt-2">
@@ -124,16 +124,16 @@ const Deposit = () => {
                     ]}
                     html={true}
                     wrapper='p'
-                    className="block textMidSm text-gray-600 mt-2"
+                    className="block textMidSm text-gray-300 mt-2"
                     speed={200}
                 />
               </div> 
         </div>
       <form onSubmit={handleSubmit}>
-            <label  className="block textMidSm text-gray-600 mt-2" htmlFor="amount">Amount</label>
-            <input type="number"   className='textMidSm p-1 rounded-sm  border block w-full outline-none bg-white text-gray-600' name='amount'  value={formData.amount} required={true} onChange={handleChange}/>
-            <label  className="block textMidSm text-gray-600 mt-2" htmlFor="number">Phone Number</label>
-            <input type="number"   className='textMidSm p-1 rounded-sm  border block w-full outline-none bg-white text-gray-600' name='phone_number' required={true} value={formData.phone_number} onChange={handleChange}/>
+            <label  className="block textMidSm text-gray-400 mt-2" htmlFor="amount">Amount</label>
+            <input type="number"   className='textMidSm p-1 rounded-sm   block w-full outline-none bg-white text-gray-200 bg-opacity-15' name='amount'  value={formData.amount} required={true} onChange={handleChange}/>
+            <label  className="block textMidSm text-gray-400 mt-2" htmlFor="number">Phone Number</label>
+            <input type="number"   className='textMidSm p-1 rounded-sm   block w-full outline-none bg-white text-gray-200  bg-opacity-15' name='phone_number' required={true} value={formData.phone_number} onChange={handleChange}/>
             <div>
             <button  className={` bgBlue  w-full p-2 rounded-sm text-white font-bold hover:opacity-85 block mt-2`} type='submit' disabled={submitting} onSubmit={handleSubmit}>{submitting ? 'Sending stk...' : "Deposit"}</button>
             </div>

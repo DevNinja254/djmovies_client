@@ -3,6 +3,7 @@ import MainLayout from '../layout/MainLayout'
 import api, { config } from '../assets/js/api'
 import Loader from '../ui/Loader'
 import { useNavigate } from 'react-router-dom'
+import { HashLoader, PacmanLoader } from 'react-spinners'
 const Dj = () => {
   // const []
   const [dej, setDj] = useState('')
@@ -12,6 +13,7 @@ const Dj = () => {
   const [loader1, setLoader1] = useState(true)
   const [loader2, setLoader2] = useState(true)
   const [loader3, setLoader3] = useState(false)
+  const [loader4, setLoader4] = useState(false)
   const [progressDj, setProgressDj] = useState(10)
   const [progressGenre, setProgressGenre] = useState(10)
   const [progressVideos, setProgressVideos] = useState(10)
@@ -71,7 +73,7 @@ const Dj = () => {
       fetchVideos(dej.dj_name, genre.title)
     } else {
       const djData = sessionStorage.getItem('dj')
-      const genreData = sessionStorage.getItem('genre')
+      const genreData = sessionStorage.getItem('genres')
       if (djData) {
         // console.log('local')
         setDjs(JSON.parse(djData))
@@ -97,8 +99,8 @@ const Dj = () => {
   }, [dej.dj_name, genre.title])
 
   const handleRedirect = async (vida) => {
-    setProgressVideos(2)
-    setLoader3(true)
+    setProgressVideos(20)
+    setLoader4(true)
     api.get(`/videoDetails/?genre=${vida.genre}&page_size=6&ordering=-date_uploaded`, {
       ...config,
       onDownloadProgress: (progressEvent) => {
@@ -125,22 +127,23 @@ const Dj = () => {
   return (
     <MainLayout>
       {/* loader */}
-      {loader3 ? <Loader progres={progressVideos}/> : null}
+      {loader3 | loader4 ? <Loader progres={progressVideos}/> : null}
       {/* all dj */}
-      <div className='my-2 px-3 pb-3 flex items-center gap-3 border-b flex-wrap'>
+      <h1 className='titleH1 escapeSearch mx-3'>{loader3 ? `loading ...` : `${dej.dj_name} : ${genre.title}`}</h1>
+      <div className='my-2 mx-3 pb-3 flex items-center gap-3 border-dotted border-b-2 border-gray-600 flex-wrap'>
         {djs.map((dj, index) => (
-          <span key={index} className={` p-2 textMidSm capitalize  font-bold rounded-sm hover:cursor-pointer my-2 ${dej.dj_name == dj.dj_name ? "bg-orange-400 text-white" : "bg-gray-600 bg-opacity-15 text-gray-700"}`} onClick={() => {
+          <span key={index} className={` p-2 textMidSm capitalize  font-bold rounded-sm hover:cursor-pointer my-2 ${dej.dj_name == dj.dj_name ? "bg-orange-400 text-white" : "bg-gray-600 bg-opacity-15 text-gray-300"}`} onClick={() => {
             setDj(dj)
           }}>
             {dj.dj_name}
           </span>
         ))}
       </div>
-      <h1 className='text-lg text-gray-700 capitalize font-bold px-2' >{dej.dj_name}</h1>
+
       {/* genre */}
-      <div className='my-2 px-3 pb-3 flex items-center gap-3  flex-wrap'>
+      <div className='my-2 px-3 flex items-center gap-3  flex-wrap'>
         {genres.map((gen, index) => (
-          <span key={index} className={` p-2 textMidSm capitalize  font-bold rounded-sm hover:cursor-pointer my-2 ${gen.title == genre.title ? "titleBg text-white" : "bg-gray-600 bg-opacity-15 text-gray-700"}`} onClick={() => {
+          <span key={index} className={` p-2 textMidSm capitalize  font-bold rounded-sm hover:cursor-pointer my-2 ${gen.title == genre.title ? "titleBg text-white" : "bg-gray-600 bg-opacity-15 text-gray-300"}`} onClick={() => {
             setGenre(gen)
           }}>
             {gen.title}
@@ -150,11 +153,17 @@ const Dj = () => {
       <div className='px-2'>
        
         <p className='textMidSm text-gray-500 text-center whitespace-nowrap overflow-hidden py-2 hyphen-separator'>
-    <span>{dej.dj_name} : {genre.title} </span>
+    <span>{loader3 ? `loading ${dej.dj_name} : ${genre.title}...` : `${dej.dj_name} : ${genre.title}`} </span>
   </p>
       </div>
       {/* videos */}
-      <div className='grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 px-2 md:w-11/12 md:mx-auto'>
+      {loader3 ? <div className='h-60 flex items-center justify-center'>
+     
+     <PacmanLoader
+     color='white'
+     loading= {loader3}
+     />
+    </div> : <div className='grid grid-cols-3 gap-2 movieContainer mx-3'>
             {datas.map((data, index) => (
                 <div key={data.vidId} style={{ lineHeight: '0.5rem', marginBottom: "0.5rem" }} onClick={() => {
                   handleRedirect(data)
@@ -162,11 +171,11 @@ const Dj = () => {
                     <figure>
                         <img src={require(data.image)} alt="" className='imgRecent hover:scale-105 transition-all duration-100 ease-linear' />
                     </figure>
-                    <p className='capitalize text-sm text-gray-700 font-bold ' >{data.title}: <span className='textSm font-normal'>{data.season}</span></p>
-                    <p className='textMidSm text-gray-600 capitalize font-serif' >{data.cartegory}</p>                    
+                    <p className='capitalize text-sm text-gray-300 font-bold ' >{data.title}: <span className='textSm font-normal'>{data.season}</span></p>
+                    <p className='textMidSm text-gray-400 capitalize font-serif' >{data.cartegory}</p>                    
                 </div>
             ))}
-        </div>
+        </div>}
     </MainLayout>
   )
 }

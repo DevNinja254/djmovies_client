@@ -13,7 +13,10 @@ const Mp4 = () => {
     const [buying, setBuying] = React.useState(false)
     const [userData, setUserData] = useState({})
     const [authenticated, setAuthenticated] = useState(false)
-    const [progress, setProgress] = useState(4)
+    const [progress, setProgress] = useState(10)
+    const [progressProfile, setProgressProfile] = useState(10)
+    const [progressPurchase, setProgressPurchase] = useState(10)
+    const [progressVideo, setProgressVideo] = useState(10)
     const [myListTitles, setMyListTitles] = useState([])
     const vidRef = useRef(null)
     const navigate = useNavigate()
@@ -31,10 +34,22 @@ const Mp4 = () => {
                 username: userData.username,
                 }
                 try{
-                api.patch(`/profile/${userData.profile.buyerid}/`, {account: (userData.profile.account - (movie.price))}, config)
+                api.patch(`/profile/${userData.profile.buyerid}/`, {account: (userData.profile.account - (movie.price))}, {
+                  ...config,
+                  onDownloadProgress: (progressEvent) => {
+                    const percentageCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                    setProgressProfile(percentageCompleted)
+                    
+                }})
                 .then(res => {
                     try {
-                    api.patch(`/videoDetails/${movie.vidId}/`, {purchase_times: (movie.purchase_times + 1)}, config)
+                    api.patch(`/videoDetails/${movie.vidId}/`, {purchase_times: (movie.purchase_times + 1)}, {
+                      ...config,
+                      onDownloadProgress: (progressEvent) => {
+                        const percentageCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                        setProgressVideo(percentageCompleted)
+                        
+                    }})
                     .then(res => {
                         // console.log(res.data)
                     })
@@ -42,7 +57,13 @@ const Mp4 = () => {
                     // console.log(error)
                     }
                     try {
-                    api.post("/purchased/", data, config)
+                    api.post("/purchased/", data, {
+                      ...config,
+                      onDownloadProgress: (progressEvent) => {
+                        const percentageCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                        setProgressPurchase(percentageCompleted)
+                        
+                    }})
                     .then(response => 
                     {
                         const data1 = response.data
@@ -68,8 +89,9 @@ const Mp4 = () => {
                     }catch (error){
                 console.log(error)
                 setError(true)
-                } finally {
                 setBuying(false)
+                } finally {
+                
                 setTimeout(() => {
                     setError(false)
                 }, 3000);
@@ -81,6 +103,8 @@ const Mp4 = () => {
             }else {
                 navigate("/deposit")
             }
+            } else {
+              setBuying(false)
             }
         } else {
             navigate("/account/authenticate")
@@ -104,7 +128,7 @@ const Mp4 = () => {
         window.scrollTo(0,0)
         const carty = localStorage.getItem("cart")
         const video = sessionStorage.getItem("toPlay")
-        const sim = localStorage.getItem("similar")
+        const sim = sessionStorage.getItem("similar")
         if (video) {
           setMovie(JSON.parse(video))
           setSimilar(JSON.parse(sim))
@@ -162,7 +186,7 @@ const Mp4 = () => {
         if(vidRef.current) {
             vidRef.current.scrollIntoView({behaviour: 'smooth'}) 
         }
-        setProgress(2)
+        setProgress(10)
         // setLoading(true)
         // console.log(vida)
         api.get(`/videoDetails/?genre=${vida.genre}&page_size=6&ordering=-date_uploaded`, {
@@ -198,12 +222,17 @@ const Mp4 = () => {
     
         })
       }
+      
   return (
    <MainLayout>
-    <div className='bg-slate-800 bg-opacity-20'>
-        {loading ? <>
-        <Loader/>
-        </> : <>
+    <div className='bg-slate-800 bg-opacity-20 pt-10'>
+      {buying ? <div>
+        <Loader progres={(progressProfile + progressPurchase + progressVideo) / 3}/>
+      </div> : null}
+        {loading   ? <>
+          <Loader progres={progress} />
+        </>
+         : <>
             <div className='p-3' ref={vidRef}>
             <p className='text-orange-600 font-bold text-xl capitalize font-mono'>{movie.title}</p>
             <p className='text-sky-800 font-bold text-lg capitalize'>Ksh.{movie.price}</p>

@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { GrFormView as View } from "react-icons/gr";
 import api, { config } from '../../assets/js/api';
 import Loader from '../../ui/Loader';
-const Recent = ({datas, myListTitles, settingNavigating}) => {
+const Trending = ({datas, myListTitles, settingNavigating}) => {
+  const loadMoreRef = useRef(null)
     const [progres, setProgress] = useState(10)
     const [error, setError] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -42,11 +42,11 @@ const Recent = ({datas, myListTitles, settingNavigating}) => {
       }
       
   return (
-    <div className='p-3 pt-0'>
+    <div className='p-3'>
            {/* loader */}
         {redirecting | isLoading ? <Loader progres={progres}/> : null}
         {error ? <p className='fixed bottom-2 left-2 bg-red-600 text-white font-bold textMidSm p-2 rounded-sm'>Error! loading results.</p> : null}
-            <h1 className='titleH1'>Suggestions</h1>
+            <h1 className='titleH1 flex items-center'>Trending Now <img className='campfire' src={require('../../assets/images/campfire.png')} alt="" /></h1>
             
         <div className='grid grid-cols-3 gap-2 movieContainer'>
             {datas.map((data, index) => (
@@ -60,11 +60,11 @@ const Recent = ({datas, myListTitles, settingNavigating}) => {
                     <p className='textMidSm text-gray-200 capitalize font-serif' >{data.dj}</p>                    
                 </div>
             ))}
-
+            
         </div>
-        <NavLink to="/suggestions" className={`m-3 bg-white text-white font-bold textMidSm block w-11/12 mx-auto p-2 rounded-sm bg-opacity-20 text-center transition-all duration-100 ease-linear`} >Watch more</NavLink>
+        <NavLink to="/trend" className={`m-3 bg-white text-white font-bold textMidSm block w-11/12 mx-auto p-2 rounded-sm bg-opacity-20 text-center transition-all duration-100 ease-linear`} >Watch More Trends</NavLink>
     </div>
   )
 }
 
-export default Recent
+export default Trending

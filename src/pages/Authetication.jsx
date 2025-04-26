@@ -30,22 +30,7 @@ const Authetication = () => {
     }, [])
   return (
     <MainLayout>
-        {/* <div className='' id='spinner' style={{
-          "border": "0",
-        }}>
-          <Spinner
-          color="rgba(0,0,0,0.3)"
-          loading={isLoading}
-          cssOverride={{
-            "width": "100%",
-            "backgroundColor": "white"
-          }}
-          size={150}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-        </div> */}
-          <div className='bg-slate-800 bg-opacity-20 p-3' style={{
+          <div className='bg-slate-800 bg-opacity-20 p-3 pt-10' style={{
         minHeight: "93vh"
        }}>
           {

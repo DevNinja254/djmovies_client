@@ -6,6 +6,9 @@
     padding: 0;
     box-sizing: border-box;
 }
+body {
+    background: rgb(16, 17, 2);
+}
 .bodyBg {
     background-color: rgb(229, 232, 247);
 }
@@ -89,9 +92,7 @@ height: 40vh;
 /* .fig {
     height: 20vh;
 } */
- .container {
-    min-height: 50vh;
- }
+
  .hyphen-separator {
     position: relative;
     display: flex;
@@ -129,6 +130,7 @@ height: 40vh;
     background-color: white; /* To visually separate the hyphens */
     z-index: 1; /* Ensure the text is above the pseudo-elements */
   }
+ 
 @media screen and  (min-width: 600px) {
     .neutral figure {
         height:50vh;
@@ -185,16 +187,29 @@ height: 40vh;
 /* -------------start mainlayout styling ---------------------- */
 
 #mainLayout header {
-    background: rgb(51, 53, 69);
-    /* background: ; */
+    /* background: rgb(51, 53, 69); */
 }
-#mainLayout header .active {
+.slide .active {
     color: white;
     font-weight: bold;
+    background: rgba(128, 129, 128, 0.178);
+    border-radius: 10px;
 }
 #mainLayout .side .active {
     color: white;
     font-weight: bold;
+}
+.bgBlack {
+    /* background: rgb(40, 41, 46); */
+    background: rgb(16, 17, 2);
+}
+
+.bgForm {
+    /* background: rgb(40, 41, 46); */
+    background: rgba(56, 58, 64, 0.952);
+}
+.bgSlide {
+    background: rgb(45, 44, 44);
 }
 .profileImg {
     width: 30px;
@@ -207,30 +222,16 @@ body::-webkit-scrollbar{
     height: 50px;
 }
 body::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
+    background-color: #383434;
 }
 body::-webkit-scrollbar-thumb {
-    background-color: rgba(66, 66, 66, 0.295); /* Color of the thumb */
+    background-color: rgba(158, 154, 154, 0.295); /* Color of the thumb */
     border-radius: 2px;
 }
 body::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
+    background-color: #797777;
   }
-.container::-webkit-scrollbar{
-    width: 8px;
-    height: 50px;
-}
-.continer::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-}
 
-.container::-webkit-scrollbar-thumb {
-    background-color: rgba(66, 66, 66, 0.295); /* Color of the thumb */
-    border-radius: 2px;
-}
-.container::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-  }
 .slider {
     overflow-x: scroll;
 }
@@ -239,32 +240,143 @@ body::-webkit-scrollbar-thumb:hover {
     /* height: 50px; */
 }
 .slideFig {
-    height: 17vh;
-    min-width: 60%;
-    max-width: 60%;
+    height: 95vw;
+    min-width: 100%;
+    max-width: 100%;
+}
+.bgBlackFade {
+    background-image: linear-gradient(to top,rgb(16, 17, 2), rgba(16, 17, 1, 0.5), rgb(16, 17, 2, 0.1), rgba(16, 17, 1, 0.05));
+}
+.bgButton {
+    background: linear-gradient(to right, rgb(0, 141, 129), rgb(0, 106, 177), rgb(0, 90, 163));
+}
+.titleH1 {
+    font-size: 1.5rem;
+     margin-bottom: 10px;
+    font-weight: bold;
+    color: white;
 }
 .imgRecent {
-    height: 25vh;
+    height: 30vh;
     width: 100%;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 .similarImg {
     height: 20vh;
     width:100%;
 }
-@media screen and (min-width: 640px) {
-    .slideFig {
-        height: 8vh;
-        min-width: 20%;
-        max-width: 20%;
+.campfire {
+    width: 30px;
+    
+}
+.escapeSearch {
+    margin-top: 3.5rem;
+}
+.sidebar2 {
+    display: none;
+}
+.cart {
+    margin-top: 3rem;
+}
+  .cart .img {
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+  }
+@media screen and (min-width: 900px) {
+    .sidebar {
+        display: none;
+    }
+    .sidebar2 {
+        display: block;
+    }
+    .trigger2 {
+        display: block;
+    }
+    .trigger1 {
+        display: none;
+    }
+    .splitContainer {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 1rem;
+    }
+    .searchSmall {
+        display: none;
+    }
+    .slider{
+        display: none;
+    }
+    .container{
+        height: 90vh;
+        overflow-y: scroll;
+        width: 100%;
+    }
+    .container::-webkit-scrollbar{
+        width: 8px;
+        height: 100px;
+    }
+    .container::-webkit-scrollbar-track {
+        background-color: #383434;
+    }
+    
+    .container::-webkit-scrollbar-thumb {
+        background-color: rgba(158, 154, 154, 0.295); /* Color of the thumb */
+        border-radius: 5px;
+    }
+    .container::-webkit-scrollbar-thumb:hover {
+        background-color: #797777;
+    }
+    .slide {
+        background: transparent;
+    }
+    .headNew {
+        border-bottom: 1px solid rgb(43, 42, 42);
+    }
+    .movieContainer {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(5, 1fr);
+    }
+    .imgRecent {
+        height: 23vh;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 3px;
+    }
+    .form900 {
+        display: flex;
     }
 }
-@media screen and (min-width: 1024px) {
-    .slideFig {
-        height: 20vw;
-        min-width: 40%;
-        max-width: 20%;
+.imgDj {
+    width: 55px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+@media screen and (min-width: 1200px) {
+    .splitContainer {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        gap: 1rem;
+    }
+    .movieContainer {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(8, 1fr);
+    }
+}
+@media screen and (min-width: 1330px) {
+    .splitContainer {
+        display: grid;
+        grid-template-columns: 1fr 5fr;
+        gap: 1rem;
+    }
+    .movieContainer {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(9, 1fr);
     }
 }
 .bgBlue {
@@ -345,3 +457,4 @@ body::-webkit-scrollbar-thumb:hover {
   .about-contact a:hover {
     text-decoration: underline;
   }
+  

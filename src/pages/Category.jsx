@@ -3,23 +3,22 @@ import MainLayout from '../layout/MainLayout'
 import { useNavigate, useParams } from 'react-router-dom'
 import Loader from '../ui/Loader'
 import api, { config } from '../assets/js/api'
-import { HashLoader, PacmanLoader } from 'react-spinners'
-
-const Search = () => {
-    const {searchTerm} = useParams()
+import { HashLoader, PacmanLoader, BarLoader as Spinner } from 'react-spinners'
+import ClipLoader from "react-spinners/ClipLoader";
+const Category = () => {
+    const {category} = useParams()
     const [datas, setData] = useState([])
     const [error, setError] = useState(false)
     const [progres, setProgress] = useState(10)
     const [myListTitles, setMyListTitles] = useState([])
     const [loading, setLoading] = useState(true)
-    const [loading2, setLoading2] = useState(false)
     const navigate = useNavigate()
-    const fetchData = async(term) => {
+    const fetchData = async() => {
       setError(false)
       setProgress(10)
       setLoading(true)
       try {
-        const response = await api.get(`/videoDetails/?page_size=20&ordering=-date_uploaded&title=${term}`, {
+        const response = await api.get(`/videoDetails/?page_size=300&ordering=-date_uploaded&cartegory=${category}`, {
                   ...config,
                   onDownloadProgress: (progressEvent) => {
                     const percentageCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
@@ -36,7 +35,7 @@ const Search = () => {
     }
       const handleRedirect = async (vida) => {
         setProgress(4)
-        setLoading2(true)
+        setLoading(true)
         api.get(`/videoDetails/?genre=${vida.genre}&page_size=6&ordering=-date_uploaded`, {
           ...config,
           onDownloadProgress: (progressEvent) => {
@@ -61,40 +60,41 @@ const Search = () => {
         })
       }
    useEffect(() => {
-    fetchData(searchTerm)
+    fetchData()
     const mytitles = localStorage.getItem('myListTitles')
         if (mytitles) {
           setMyListTitles(JSON.parse(mytitles))
         }
-   }, [searchTerm]) 
+   }, [category]) 
   return (
     <MainLayout>
-        {loading | loading2 ? <Loader progres={progres}/> : null}
-        <h1 className='titleH1 escapeSearch mx-3'>{loading ? `Searching ${searchTerm}...` : `${searchTerm}`}</h1>
+        {loading ? <Loader progres={progres}/> : null}
+        <h1 className='titleH1 escapeSearch capitalize mx-3'>{loading ? 'Loading...' : category}</h1>
          <div className='px-2'>
        <p className='textMidSm text-gray-500 text-center whitespace-nowrap overflow-hidden py-2 hyphen-separator'>
-        <span>{loading ? `searching ${searchTerm}` : `${datas.length} movies and series from search "${searchTerm}"`}</span>
+        <span>{loading ? `loading ${category} movies...`:`${datas.length} ${category} videos`} </span>
        </p>
      </div>
         {/* videos */}
-        {datas.length == 0 ? <div>
-      <p className='text-white p-3 text-center titleH1 md:'>{loading ? "Please wait. Searching...." : `No video by name "${searchTerm}" found.`}</p>
-     </div> : loading ? <div className='h-60 flex items-center justify-center'>
+      {datas.length == 0 && !loading ? <div>
+      <p className='text-white p-3 text-center titleH1 md:'> Currently no {category} movie.</p>
+     </div> : null }
+     {loading ?  <div className='h-60 flex items-center justify-center'>
      
-     <PacmanLoader
-     color='white'
-     loading= {loading}
-     />
-    </div> : <div className='grid grid-cols-3 gap-2 movieContainer mx-3'>
+      <PacmanLoader
+      color='white'
+      loading= {loading}
+      />
+     </div> : <div className='grid grid-cols-3 gap-3 movieContainer mx-6'>
             {datas.map((data, index) => (
-                <div key={data.vidId} style={{ lineHeight: '0.5rem', marginBottom: "0.5rem" }} onClick={() => {
+                <div key={index} style={{ lineHeight: '0.5rem', marginBottom: "0.5rem" }} onClick={() => {
                   handleRedirect(data)
                 }}>
                     <figure>
                         <img src={require(data.image)} alt="" className='imgRecent hover:scale-105 transition-all duration-100 ease-linear' />
                     </figure>
-                    <p className='capitalize text-sm text-gray-300 font-bold ' >{data.title}: <span className='textSm font-normal'>{data.season}</span></p>
-                    <p className='textMidSm text-gray-400 capitalize font-serif' >{data.dj}</p>                    
+                    <p className='capitalize text-sm text-gray-200 font-bold ' >{data.title}: <span className='textSm font-normal'>{data.season}</span></p>
+                    <p className='textMidSm text-gray-200 capitalize font-serif' >{data.dj}</p>                    
                 </div>
             ))}
         </div>}
@@ -103,4 +103,4 @@ const Search = () => {
   )
 }
 
-export default Search
+export default Category

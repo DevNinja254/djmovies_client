@@ -52,11 +52,11 @@ function AboutPage() {
   }, [])
   return (
     <MainLayout>
-      <div className="about-container">
+      <div className="about-container mx-4 bg-gray-500 bg-opacity-20 ">
         {loading | loading1 ? <Loader progres={(progres + progres1) / 2}/> : null}
       {!loading && !loading1 ? <>
-        <section className="about-overview">
-        <h1 className='text-lg my-2 text-gray-700 font-bold'>About dj MOVIES</h1>
+        <section className="about-overview sm:w-10/12 sm:mx-auto">
+        <h1 className='text-lg my-2 text-gray-700 font-bold '>About dj MOVIES</h1>
         <p className='textMidSm text-gray-600 font-light'>
           Welcome to ---------, the ultimate online destination for experiencing the cinematic movie performances of your favorite DJs, including the iconic DJ Afro, the masterful DJ Smith, the electrifying DJ Sky, and many more! We are passionate about curating and delivering the full visual and auditory spectacle of their incredible sets directly to you.
         </p>
@@ -65,7 +65,7 @@ function AboutPage() {
         </p>
       </section>
 
-      <section className="about-ceo">
+      <section className="about-ceo sm:w-10/12 sm:mx-auto">
         <h2 className='textBlue font-bold mb-4'>Meet Our Leader</h2>
         <div className="">
           <figure className='float-left'>
@@ -79,7 +79,7 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="about-team">
+      <section className="about-team sm:w-10/12 sm:mx-auto">
         <h2 className='textBlue font-bold mb-4'>Our Dedicated Team</h2>
         <p className='textMidSm'>Behind the scenes, a dedicated team works tirelessly to bring you the best possible experience.</p>
         <div className="mt-4 md:grid md:grid-cols-2 gap-3">
@@ -96,14 +96,14 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="about-vision">
+      <section className="about-vision sm:w-10/12 sm:mx-auto">
         <h2 className='textBlue font-bold mb-4'>Our Guiding Vision</h2>
         <p className='textMidSm'>
           We envision a future where the immersive and dynamic art of DJ performances is easily accessible to fans worldwide, transcending the boundaries of physical events. [Your Website Name] strives to be the leading platform that connects audiences with the full cinematic expression of their favorite DJs' talents, creating unforgettable entertainment moments.
         </p>
       </section>
 
-      <section className="about-contact">
+      <section className="about-contact sm:w-10/12 sm:mx-auto">
         <h2 className='textBlue font-bold mb-4'>Get in Touch</h2>
         <p className='textMidSm'>
           We value your feedback and are always eager to connect with our community. If you have any questions, suggestions, or simply want to say hello, please don't hesitate to visit our <NavLink to="/contact">Contact Page</NavLink>. We're excited to hear from you!

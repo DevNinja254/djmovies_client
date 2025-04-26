@@ -3,6 +3,7 @@ import MainLayout from '../layout/MainLayout'
 import { useNavigate } from 'react-router-dom'
 import Loader from '../ui/Loader'
 import api, { config } from '../assets/js/api'
+import { PacmanLoader } from 'react-spinners'
 
 const Guide = () => {
     const [datas, setData] = useState([])
@@ -37,7 +38,7 @@ const Guide = () => {
     fetchData()
    }, []) 
    const handleRedirect = async (vida) => {
-        setProgress(4)
+        setProgress(20)
         setRedirect(true)
         sessionStorage.setItem("toPlay", JSON.stringify(vida))
         navigate(`/watch/${vida.vidId}/`)
@@ -47,26 +48,32 @@ const Guide = () => {
          {loading | redirect ? <Loader progres={progres}/> : null}
        
         {loading ? null : <>
-            <h3 className='m-3 text-lg font-bold text-gray-600'>How to access  various services.</h3>
+            <h3 className=' text-lg font-bold titleH1 mt-12 pt-2 mx-3'>Guides.</h3>
             <div className='px-2'>
             <p className='textMidSm text-gray-500 text-center whitespace-nowrap overflow-hidden py-2 hyphen-separator'>
                 <span>{datas.length} guide videos </span>
             </p>
         </div> 
         {/* videos */}
-        <div className='grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 px-2 md:w-11/12 md:mx-auto'>
-            {datas.map((data, index) => (
-                <div key={index} style={{ lineHeight: '0.5rem', marginBottom: "0.5rem" }} onClick={() => {
-                handleRedirect(data)
-                }}>
-                    <figure>
-                        <img src={require(data.image)} alt="" className='imgRecent hover:scale-105 transition-all duration-100 ease-linear' />
-                    </figure>
-                    <p className='capitalize text-sm text-gray-700 font-bold ' >{data.title}: <span className='textSm font-normal'>{data.season}</span></p>
-                    <p className='textMidSm text-gray-600 capitalize font-serif' >{data.dj}</p>                    
-                </div>
-            ))}
-            </div>
+        {loading ? <div className='h-60 flex items-center justify-center'>
+     
+        <PacmanLoader
+        color='white'
+        loading= {loading}
+        />
+        </div> : <div className='grid grid-cols-3 gap-2 movieContainer mx-3'>
+                {datas.map((data, index) => (
+                    <div key={data.vidId} style={{ lineHeight: '0.5rem', marginBottom: "0.5rem" }} onClick={() => {
+                      handleRedirect(data)
+                    }}>
+                        <figure>
+                            <img src={require(data.image)} alt="" className='imgRecent hover:scale-105 transition-all duration-100 ease-linear' />
+                        </figure>
+                        <p className='capitalize text-sm text-gray-300 font-bold ' >{data.title}: <span className='textSm font-normal'>{data.season}</span></p>
+                        <p className='textMidSm text-gray-400 capitalize font-serif' >{data.dj}</p>                    
+                    </div>
+                ))}
+            </div>}
         </>}
 
     </MainLayout>

@@ -8,7 +8,7 @@ export default defineConfig({
     vitePluginRequire.default(),
   ],
   server: {
-    // port: 8001,
+    port: 8001,
     // origin:'https://smooth-vast-thrush.ngrok-free.app',
   }
 })
