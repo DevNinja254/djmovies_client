@@ -23,7 +23,7 @@ const Genre = ({datas, myListTitles, settingNavigating}) => {
         })
         .then(res1 => {
           const data1 = res1.data.results
-          localStorage.setItem("similar", JSON.stringify(data1))
+          sessionStorage.setItem("similar", JSON.stringify(data1))
           const vidaEdited = vida
           const backendURL = 'https://admin.flixshow.xyz'; 
           const videoURL = `${backendURL}${vida.video}`

@@ -111,7 +111,7 @@ const Genre = () => {
       })
       .then(res1 => {
         const data1 = res1.data.results
-        localStorage.setItem("similar", JSON.stringify(data1))
+        sessionStorage.setItem("similar", JSON.stringify(data1))
         sessionStorage.setItem("toPlay", JSON.stringify(vida))
         if (myListTitles) {
           if(myListTitles.includes(vida.title)){

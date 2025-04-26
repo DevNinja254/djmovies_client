@@ -25,7 +25,7 @@ const Dj = ({datas, myListTitles, settingNavigating}) => {
         })
         .then(res1 => {
           const data1 = res1.data.results
-          localStorage.setItem("similar", JSON.stringify(data1))
+          sessionStorage.setItem("similar", JSON.stringify(data1))
           const vidaEdited = vida
           const videoURL = `${backendURL}${vida.video}`
           vidaEdited.image = `${backendURL}${vida.image}`
@@ -54,7 +54,7 @@ const Dj = ({datas, myListTitles, settingNavigating}) => {
                 <div key={data.id}>
                   <div className='flex items-center justify-between mt-5'>
                     <h1 className='titleH1 '>{data.dj_name}</h1>
-                    <NavLink to={`/deejays/${data.dj_name}`} className={`text-gray-500 text-lg font-bold flex items-center `} >More <Next size={20}/></NavLink>
+                    <NavLink to={`/dj/${data.dj_name}`} className={`text-gray-500 text-lg font-bold flex items-center `} >More <Next size={20}/></NavLink>
                   </div>
                   <div className=''>
                       {data.video_details.map(dat => {
